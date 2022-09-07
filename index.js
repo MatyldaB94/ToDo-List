@@ -16,24 +16,24 @@ class ToDo {
     }
 
     createHTMLToDoItem() {
-        const containerDiv = document.createElement("div")  //to jest do tworzenia HTML z punktu JS
+        const containerDiv = document.createElement("div")
         containerDiv.classList.add("to-do-container");
         const subContainerDiv = document.createElement("div")
         subContainerDiv.classList.add("todo-sub-container")
-        const checkBox = document.createElement("input")  //to jest do tworzenia HTML z punktu JS
+        const checkBox = document.createElement("input")
         checkBox.setAttribute("type", "checkbox");
         checkBox.classList.add("checkbox");
-        const paragraf = document.createElement("p")  //to jest do tworzenia HTML z punktu JS
+        const paragraf = document.createElement("p")
         paragraf.innerText = this.toDoItem
         paragraf.classList.add("paragraf");
-        const deleteButton = document.createElement("button")  //to jest do tworzenia HTML z punktu JS
+        const deleteButton = document.createElement("button")
         deleteButton.classList.add("destroy");
         deleteButton.innerText = "X"
 
         checkBox.addEventListener("change", (event) => {
             if (event.target.checked === true) {
-                containerDiv.classList.add("is-completed-item"); //klasa jest tylo do filtracji 
-                paragraf.classList.add("is-completed");// w css dodać tekst decoration: strike through
+                containerDiv.classList.add("is-completed-item");
+                paragraf.classList.add("is-completed");// 
             } else {
                 containerDiv.classList.remove("is-completed-item");
                 paragraf.classList.remove("is-completed");
@@ -41,47 +41,43 @@ class ToDo {
         });
 
         deleteButton.addEventListener("click", () => {
-            containerDiv.remove(); // to nam już usuwa contener
+            containerDiv.remove();
             const allToDoItems = document.querySelectorAll(".to-do-container");
 
             console.log(allToDoItems)
-            if (allToDoItems.length === 0) { // jeśli wszystko jest usunięte, 
-                footerMenu.classList.add("is-hidden") // <- to usuwa nam all, active
+            if (allToDoItems.length === 0) {
+                footerMenu.classList.add("is-hidden")
             }
             countItems();
         });
 
-        subContainerDiv.appendChild(checkBox); // wrzucanie jakiegoś HTML do inneg HTML
+        subContainerDiv.appendChild(checkBox);
         subContainerDiv.appendChild(paragraf);
         containerDiv.appendChild(subContainerDiv);
         containerDiv.appendChild(deleteButton);
 
 
 
-        // div.innerText = this.toDoItem //wrzuca do środka do div cokolwiek, tutaj text
-        return containerDiv; // zwracamy zmienną ktora utworzyliksmy
+
+        return containerDiv;
     }
 
 }
-// to na górze było tylko do nauki od 12 do 15 
-//  const firstToDo = new ToDo("Nauczyć się klas") // każde dzieco mjoże sobie wywołać metodę stworzoną w kalsie
-// firstToDo.createHTMLToDoItem();
-// const secondToDo = new ToDo("nie chce mi się") // każde dzieco mjoże sobie wywołać metodę stworzoną w kalsie 
-// secondToDo.createHTMLToDoItem(); //wywołujemy metodę 
 
 
-const form = document.querySelector("#new-todos-form")   // zmienna, żeby  trzymać nasz formularz z html
-form.addEventListener("submit", (event) => {  //dane eventu wpadają do funkji która jest drugim argument addeeventlisteren
-    // // to jest funkcja dzięki event submit wiemy, że user kliknął submit w formularzu
-    event.preventDefault() //strona nie będzie się odświeżać
+
+const form = document.querySelector("#new-todos-form")
+form.addEventListener("submit", (event) => {
+
+    event.preventDefault()
     event.stopPropagation();
-    const input = document.querySelector("#todo-input") // to nam wyszukuje input
+    const input = document.querySelector("#todo-input")
 
     const newToDo = new ToDo(input.value)
-    input.value = ""; // nie wyświetla się wpisany tekst w inpucie
-    const newToDoHtml = newToDo.createHTMLToDoItem() //mamy nowa zmienną do której przypisujemy to co zwraca funkcja createHTMLtodoitem
-    const div = document.querySelector("#to-do-list")  // namierzamy diva 
-    div.appendChild(newToDoHtml)       //  dodaje elementy do html 
+    input.value = "";
+    const newToDoHtml = newToDo.createHTMLToDoItem()
+    const div = document.querySelector("#to-do-list")
+    div.appendChild(newToDoHtml)
     footerMenu.classList.remove("is-hidden")
     countItems();
 
