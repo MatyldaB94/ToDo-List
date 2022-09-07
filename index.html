@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>todos</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
@@ -20,6 +20,43 @@
         <![endif]-->
 
     <script src="index.js" async defer></script>
+    <div class="container">
+        <h1 class="title-h1 flash">todos</h1>
+        <div class="content-container">
+            <button id="folds-todo-items" class="folds-button">&#9660;</button>
+            <form id="new-todos-form">
+
+                <input type="text" class="new-todos-input text" placeholder="What needs to be done?" id="todo-input">
+                <input type="submit" hidden>
+            </form>
+
+            <div id="to-do-list"></div> <!-- on nam wyświetli co piszą ludzie -->
+            <div class="button-class is-hidden" id="footer-menu">
+                <!--  daj mu display flex-->
+                <div id="item-count" class="item-counts"></div>
+                <div class="items-value">
+                    <button id="all-item" class="items-focus">All</button>
+                    <button id="active-item" class="items-focus">Active</button>
+                    <button id="completed-item" class="items-focus">Completed</button>
+                </div>
+                <div><button id="delete-item" class="clear-completed">Clear Completed</button></div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
 </body>
 
 </html>
