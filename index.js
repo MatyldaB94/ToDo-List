@@ -1,8 +1,17 @@
+
+const allSavedToDoItems = localStorage.getItem("allSavedToDoItems") ? JSON.parse(localStorage.getItem("allSavedToDoItems")) : []
+
 const footerMenu = document.querySelector("#footer-menu");
+const allItems = document.querySelectorAll(".to-do-container");
+const itemCount = document.querySelector("#item-count");
+const allItemButton = document.querySelector("#all-item")
+
+
+
 function countItems() {
-    const allItems = document.querySelectorAll(".to-do-container");
-    const allItemsCount = allItems.length;
-    const itemCount = document.querySelector("#item-count");
+
+    const allItemsCount = allSavedToDoItems.length;
+
     if (allItemsCount === 1) {
         itemCount.innerText = "1 item left";
     } else {
@@ -11,6 +20,7 @@ function countItems() {
 }
 
 class ToDo {
+
     constructor(toDoItem) {
         this.toDoItem = toDoItem;
     }
@@ -29,6 +39,7 @@ class ToDo {
         const deleteButton = document.createElement("button")
         deleteButton.classList.add("destroy");
         deleteButton.innerText = "X"
+        deleteButton.setAttribute("to-do-item", this.toDoItem)
 
         checkBox.addEventListener("change", (event) => {
             if (event.target.checked === true) {
@@ -40,11 +51,19 @@ class ToDo {
             }
         });
 
-        deleteButton.addEventListener("click", () => {
+        deleteButton.addEventListener("click", (event) => {
+            console.log(event.target)
             containerDiv.remove();
             const allToDoItems = document.querySelectorAll(".to-do-container");
+            const toDoItemName = event.target.getAttribute("to-do-item")
+            const toDoItemIndex = allSavedToDoItems.findIndex((element) => {
+                return element === toDoItemName
+            })
+            if (toDoItemIndex > -1) {
+                allSavedToDoItems.splice(toDoItemIndex, 1)
+                localStorage.setItem("allSavedToDoItems", JSON.stringify(allSavedToDoItems))
+            }
 
-            console.log(allToDoItems)
             if (allToDoItems.length === 0) {
                 footerMenu.classList.add("is-hidden")
             }
@@ -63,26 +82,35 @@ class ToDo {
     }
 
 }
-
-
-
 const form = document.querySelector("#new-todos-form")
+const input = document.querySelector("#todo-input")
+const toDoListContainer = document.querySelector("#to-do-list")
+
+const renderToDItems = () => {
+    allSavedToDoItems.forEach((savedToDoItem) => {
+
+        const newToDo = new ToDo(savedToDoItem)
+        const newToDoHtml = newToDo.createHTMLToDoItem()
+        toDoListContainer.appendChild(newToDoHtml)
+    })
+}
+window.addEventListener("load", renderToDItems)
+
 form.addEventListener("submit", (event) => {
 
     event.preventDefault()
     event.stopPropagation();
-    const input = document.querySelector("#todo-input")
-
-    const newToDo = new ToDo(input.value)
+    allSavedToDoItems.push(input.value)
     input.value = "";
-    const newToDoHtml = newToDo.createHTMLToDoItem()
-    const div = document.querySelector("#to-do-list")
-    div.appendChild(newToDoHtml)
     footerMenu.classList.remove("is-hidden")
+    toDoListContainer.innerHTML = "";
+    renderToDItems();
+    console.log("sfs")
     countItems();
+    localStorage.setItem("allSavedToDoItems", JSON.stringify(allSavedToDoItems))
+    console.log(JSON.stringify(allSavedToDoItems))
 
-    const allItem = document.querySelector("#all-item")
-    allItem.addEventListener("click", () => {
+    allItemButton.addEventListener("click", () => {
         const allToDoItems = document.querySelectorAll(".to-do-container");
         allToDoItems.forEach((todoItem) => {
             todoItem.classList.remove("is-hidden")
